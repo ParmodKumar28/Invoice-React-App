@@ -4,11 +4,11 @@ import InvoiceForm from './components/InvoiceForm';
 import InvoiceGrid from './components/InvoiceGrid';
 
 const initialInvoice = {
-  qty: 0,
-  price: 0,
-  discountPercentage: 0,
+  qty: '',
+  price: '',
+  discountPercentage: '',
   discount: 0,
-  taxPercentage: 0,
+  taxPercentage: '',
   tax: 0,
   total: 0,
 };
@@ -19,6 +19,10 @@ function App() {
   const [editingId, setEditingId] = useState(null);
 
   const handleSubmit = (invoice) => {
+    if (!invoice.qty || !invoice.price) {
+      alert('Quantity and Price are required!');
+      return;
+    }
     if (editingId) {
       setInvoices(invoices.map((inv) => (inv.id === editingId ? { ...invoice, id: editingId } : inv)));
       setEditingId(null);
@@ -33,6 +37,15 @@ function App() {
     setEditingId(invoice.id);
   };
 
+  const handleCancelEdit = () => {
+    setCurrentInvoice(initialInvoice);
+    setEditingId(null);
+  };
+
+  const handleDelete = (id) => {
+    setInvoices(invoices.filter((invoice) => invoice.id !== id));
+  };
+
   return (
     <Container maxWidth="lg">
       <Typography variant="h4" component="h1" gutterBottom>
@@ -42,8 +55,10 @@ function App() {
         invoice={currentInvoice}
         onSubmit={handleSubmit}
         onUpdate={setCurrentInvoice}
+        onCancel={handleCancelEdit}
+        isEditing={!!editingId}
       />
-      <InvoiceGrid invoices={invoices} onEdit={handleEdit} />
+      <InvoiceGrid invoices={invoices} onEdit={handleEdit} onDelete={handleDelete} />
     </Container>
   );
 }

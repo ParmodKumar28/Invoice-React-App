@@ -1,8 +1,9 @@
 import React from 'react';
 import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, IconButton } from '@mui/material';
 import EditIcon from '@mui/icons-material/Edit';
+import DeleteIcon from '@mui/icons-material/Delete';
 
-const InvoiceGrid = ({ invoices, onEdit }) => {
+const InvoiceGrid = ({ invoices, onEdit, onDelete }) => {
   return (
     <TableContainer component={Paper}>
       <Table>
@@ -31,6 +32,9 @@ const InvoiceGrid = ({ invoices, onEdit }) => {
               <TableCell>
                 <IconButton onClick={() => onEdit(invoice)}>
                   <EditIcon />
+                </IconButton>
+                <IconButton onClick={() => onDelete(invoice.id)}>
+                  <DeleteIcon />
                 </IconButton>
               </TableCell>
             </TableRow>
